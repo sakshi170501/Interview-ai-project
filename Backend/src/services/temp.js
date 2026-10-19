@@ -1,89 +1,69 @@
-const resume=`# SAKSHI KUMARI
-**JavaScript Developer | MERN Stack Developer (Aspiring)**
+const resume = `# AMAN VERMA
+**Python & Backend Developer**
 
-Gurugram, Haryana, India  
-Email: your.email@example.com | Phone: +91-XXXXXXXXXX  
-LinkedIn: your-linkedin-url | GitHub: your-github-url
+Bengaluru, Karnataka, India  
+Email: aman.verma@example.com | Phone: +91-9876543210  
+LinkedIn: linkedin.com/in/amanverma | GitHub: github.com/amanverma
 
 ## CAREER OBJECTIVE
-Motivated Computer Science Engineering student with knowledge of JavaScript, React.js, Node.js, Express.js, and MongoDB. Seeking a software development internship or entry-level opportunity to apply technical skills, build real-world applications, and grow as a full-stack developer.
+Results-driven software engineer with experience building scalable backend APIs, data pipelines, and automation scripts using Python, Django, and PostgreSQL. Seeking a backend developer role to build high-performance web services.
 
 ## EDUCATION
-**B.Tech in Computer Science Engineering**  
-Maharshi Dayanand University (MDU), Rohtak  
-Expected Graduation: August 2027  
-CGPA: 8.0/10
+**B.Tech in Information Technology**  
+PES University, Bengaluru  
+Graduation Year: May 2025  
+CGPA: 8.5/10
 
 ## TECHNICAL SKILLS
-- **Languages:** JavaScript, C++, Python (basic)
-- **Frontend:** HTML, CSS, React.js, Tailwind CSS
-- **Backend:** Node.js, Express.js, REST APIs
-- **Database:** MongoDB, PostgreSQL
-- **Tools:** Git, GitHub, VS Code, Postman
-- **Core Concepts:** Data Structures and Algorithms, OOP, DBMS
+- **Languages:** Python, SQL, JavaScript
+- **Frameworks:** Django, FastAPI, Flask
+- **Databases:** PostgreSQL, Redis, MongoDB
+- **Tools:** Docker, Git, AWS (EC2, S3), Postman, Celery
+- **Core Concepts:** RESTful APIs, Database Optimization, Asynchronous Task Queues
 
 ## PROJECTS
 
-**1. Authentication System**
-- Developed user registration and login functionality using JavaScript and Express.js.
-- Implemented password hashing and JWT-based authentication.
-- Integrated MongoDB for user data storage.
-- Used cookies to manage authentication sessions.
+**1. E-Commerce Inventory & Order Processing API**
+- Built a RESTful backend service using Django REST Framework and PostgreSQL.
+- Implemented asynchronous task processing for email notifications using Celery and Redis.
+- Containerized the entire application using Docker and deployed it on AWS EC2.
 
-**2. Personal Portfolio Website**
-- Built a responsive portfolio using React.js and Tailwind CSS.
-- Added sections for skills, projects, education, and contact information.
-- Used reusable React components to structure the application.
-
-**3. Wishboard Reminder**
-- Developed a front-end employee birthday reminder portal during an internship at Maruti Suzuki India Limited.
-- Designed features to display employee birthdays and birthday wishes.
-- Worked on database connectivity for employee information.
+**2. Real-time Crypto Price Tracker**
+- Developed a FastAPI application to fetch and stream real-time cryptocurrency market data via WebSockets.
+- Cached frequently accessed API responses in Redis to reduce database load and improve response times.
 
 ## INTERNSHIP EXPERIENCE
-**IT Intern — Maruti Suzuki India Limited**
-- Worked on an employee wishboard reminder project.
-- Gained practical experience in web development and project workflows.
-- Collaborated with a mentor to develop and improve project features.
+**Software Engineering Intern — DataScale Labs**
+- Developed and maintained Python-based data ingestion scripts processing over 100k daily records.
+- Optimized slow SQL queries, improving endpoint response times by 35%.
 
 ## ACHIEVEMENTS & RESPONSIBILITIES
-- Student Liaison, Training and Placement Cell.
-- Event Design Coordinator.
-- Completed an ISRO learning course.
+- Winner, Inter-College Hackathon 2024.
+- Core member of the Coding Club.
+`;
 
-## DECLARATION
-I hereby declare that the information provided above is true to the best of my knowledge.
-`
+const selfDescription = `I am a backend-focused software developer passionate about writing clean, efficient code using Python and Django. I enjoy solving database performance bottlenecks, designing robust REST APIs, and working with tools like Docker and Redis to build scalable systems.`;
 
-const selfDescription=`I am a motivated Computer Science Engineering student at Maharshi Dayanand University, Rohtak, with a strong interest in web development and software engineering. I have knowledge of HTML, CSS, JavaScript, React.js, Node.js, and Express.js, and I am continuously improving my skills in backend development and Data Structures and Algorithms using C++. I have gained practical experience through an IT internship at Maruti Suzuki India Limited, where I worked on an employee wishboard reminder project. I am eager to apply my technical knowledge, learn new technologies, and contribute to real-world software development projects.`
+const jobDescription = `**Job Title:** Backend Python Developer
 
-const jobDescription=`**Job Title:** JavaScript Developer
-
-**Company:** ABC Technologies Pvt. Ltd.
+**Company:** NextGen Cloud Solutions
 
 **Job Description:**
-
-We are looking for a motivated JavaScript Developer to join our development team. The candidate will be responsible for developing, testing, and maintaining web applications using JavaScript and modern web technologies.
+We are looking for a Python Backend Developer to design, build, and maintain efficient, reusable, and reliable backend code using Python frameworks like Django or FastAPI.
 
 **Responsibilities:**
-- Develop interactive and responsive web applications.
-- Write clean, reusable, and maintainable JavaScript code.
-- Work with React.js for frontend development and Node.js for backend services.
-- Integrate REST APIs and databases.
-- Identify and fix bugs and improve application performance.
-- Collaborate with designers, developers, and other team members.
+- Design and implement low-latency, high-availability REST APIs.
+- Integrate data storage solutions using PostgreSQL and Redis.
+- Implement security and data protection measures.
+- Write unit and integration tests to ensure code quality.
 
 **Required Skills:**
-- Knowledge of JavaScript, HTML, and CSS.
-- Familiarity with React.js, Node.js, and Express.js.
-- Understanding of REST APIs, databases, and Git.
-- Good problem-solving and communication skills.
+- Strong proficiency in Python and Django or FastAPI.
+- Experience with relational databases (PostgreSQL) and caching mechanisms (Redis).
+- Familiarity with Docker and basic cloud deployment (AWS/GCP).
+- Understanding of asynchronous task processing (Celery).
 
-**Qualification:** B.Tech/B.E. in Computer Science or a related field, or equivalent practical skills.
+**Qualification:** B.Tech in Computer Science or related technical field.
+`;
 
-**Experience:** Freshers and entry-level candidates can apply.`
-
-
-module.exports={
-    resume,selfDescription,jobDescription
-}
+module.exports = { resume, selfDescription, jobDescription };
