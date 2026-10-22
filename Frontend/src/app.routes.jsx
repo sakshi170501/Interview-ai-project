@@ -1,34 +1,29 @@
-import { createBrowserRouter, Outlet } from "react-router";
+import { createBrowserRouter } from "react-router";
 import Login from "./features/auth/pages/Login";
 import Register from "./features/auth/pages/Register";
 import Protected from "./features/auth/components/Protected";
-import { AuthProvider } from "./features/auth/auth.context";
-
-// Create a Root Layout component that provides the Auth context to all routes
-const RootLayout = () => {
-  return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
-  );
-};
+import Home from "./features/interview/pages/Home";
+import Interview from "./features/interview/pages/interview";
 
 export const router = createBrowserRouter([
-  {
-    element: <RootLayout />,
-    children: [
-      {
+    {
         path: "/login",
-        element: <Login />,
-      },
-      {
+        element: <Login />
+    },
+    {
         path: "/register",
-        element: <Register />,
-      },
-      {
+        element: <Register />
+    },
+    {
         path: "/",
-        element: <Protected><h1>Home page</h1></Protected>,
-      },
-    ],
-  },
+        element: <Protected><Home /></Protected>
+    },
+    {
+        path: "/interview",
+        element: <Protected><Home /></Protected> // 👈 Redirects plain /interview back to Home
+    },
+    {
+        path: "/interview/:interviewId",
+        element: <Protected><Interview /></Protected>
+    }
 ]);

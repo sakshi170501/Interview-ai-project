@@ -54,7 +54,7 @@ ${jobDescription}`;
     const jsonSchema = zodToJsonSchema(interviewReportSchema, { target: "openApi3" });
 
     const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
             responseMimeType: "application/json",
