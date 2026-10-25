@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import "../aut.form.scss";
 
@@ -14,12 +14,17 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    await handleLogin({ email, password });
-    navigate('/')
+    setError("");
+    try {
+      await handleLogin({ email, password });
+      navigate("/");
+    } catch (requestError) {
+      setError(requestError.response?.data?.message || "Unable to log in. Please check your details and try again.");
+    }
   };
 
   if (loading) {
@@ -44,6 +49,7 @@ const Login = () => {
                 setEmail(e.target.value);
               }}
               type="email"
+              required
               id="email"
               name="email"
               placeholder="Enter the correct email address"
@@ -58,13 +64,15 @@ const Login = () => {
                 setPassword(e.target.value);
               }}
               type="password"
+              required
               id="password"
               name="password"
               placeholder="Enter the correct Password"
             />
           </div>
 
-          <button className="button primary-button">
+          {error && <p role="alert">{error}</p>}
+          <button className="button primary-button" disabled={loading}>
             LOGIN
           </button>
         </form>
@@ -79,4 +87,3 @@ const Login = () => {
 };
 
 export default Login;
-

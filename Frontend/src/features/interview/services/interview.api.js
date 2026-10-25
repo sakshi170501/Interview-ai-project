@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
     withCredentials: true,
 });
 
@@ -45,7 +45,7 @@ export const generateResumePdf = async (param) => {
     // Handle both object { interviewReportId } or direct string ID
     const interviewReportId = typeof param === 'object' ? param?.interviewReportId : param;
     
-    if (!interviewReportId) return null;
+    if (!interviewReportId) throw new Error("An interview report ID is required.");
 
     const response = await api.post(`/api/interview/resume/pdf/${interviewReportId}`, null, {
         responseType: "blob"

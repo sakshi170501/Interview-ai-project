@@ -1,6 +1,7 @@
-import React,{useState} from 'react'
+import { useState } from 'react'
 import { useNavigate,Link } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
+import "../aut.form.scss"
 
 
 const Register = () => {
@@ -8,12 +9,18 @@ const Register = () => {
   const [username,setUsername]=useState("")
   const [email,setEmail]=useState("")
   const [password,setPassword]=useState("")
+  const [error,setError]=useState("")
   const {loading,handleRegister}=useAuth()
 
    const handleSubmit=async(e)=>{
     e.preventDefault()
-    await handleRegister({username,email,password})
-    navigate("/")
+    setError("")
+    try {
+      await handleRegister({username,email,password})
+      navigate("/")
+    } catch (requestError) {
+      setError(requestError.response?.data?.message || "Unable to create your account. Please try again.")
+    }
   }
   if(loading){
     return(<main><h1>Loading....</h1></main>)
@@ -29,6 +36,9 @@ const Register = () => {
             <input
               onChange={(e)=>{setUsername(e.target.value)}}
               type="text"
+              minLength={2}
+              maxLength={40}
+              required
               id="username"
               name="username"
               placeholder="Enter the correct username"
@@ -39,6 +49,7 @@ const Register = () => {
             <input
              onChange={(e)=>{setEmail(e.target.value)}}
               type="email"
+              required
               id="email"
               name="email"
               placeholder="Enter the correct email address"
@@ -48,13 +59,17 @@ const Register = () => {
             <label htmlFor="password">Password</label>
             <input
              onChange={(e)=>{setPassword(e.target.value)}}
-              type="Password"
-              id="Password"
-              name="Password"
+              type="password"
+              id="password"
+              name="password"
+              minLength={8}
+              maxLength={72}
+              required
               placeholder="Enter the correct Password"
             />
           </div>
-          <button className="button primary-button">REGISTER</button>
+          {error && <p role="alert">{error}</p>}
+          <button className="button primary-button" disabled={loading}>REGISTER</button>
         </form>
 
         <p>Alraedy have an account?<Link to='/login'>Login</Link></p>

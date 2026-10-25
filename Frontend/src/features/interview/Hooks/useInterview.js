@@ -10,7 +10,22 @@ export const useInterview = () => {
         throw new Error("useInterview must be used within an InterviewProvider")
     }
 
-    const { loading, setLoading, report, setReport, reports, setReports } = context
+    const {
+        loading,
+        setLoading,
+        report,
+        setReport,
+        reports,
+        setReports,
+        historyError,
+        setHistoryError,
+        reportError,
+        setReportError,
+        downloading,
+        setDownloading,
+        downloadError,
+        setDownloadError
+    } = context
 
     const generateReport = async ({ jobDescription, selfDescription, resumeFile }) => {
         setLoading(true)
@@ -19,9 +34,6 @@ export const useInterview = () => {
             const interviewReport = response?.interviewReport || null
             setReport(interviewReport)
             return interviewReport
-        } catch (error) {
-            console.error("Error generating report:", error)
-            throw error
         } finally {
             setLoading(false)
         }
@@ -29,23 +41,24 @@ export const useInterview = () => {
 
     const getReportById = useCallback(async (id) => {
         if (!id) return null
+        setReportError("")
         setLoading(true)
         try {
             const response = await getInterviewReportById(id)
-            // Optional chaining (?.) prevents reading properties from null
             const interviewReport = response?.interviewReport || null
             setReport(interviewReport)
             return interviewReport
         } catch (error) {
-            console.error("Error fetching report by ID:", error)
+            setReportError(error.response?.data?.message || "Unable to load this interview plan.")
             setReport(null)
             return null
         } finally {
             setLoading(false)
         }
-    }, [ setLoading, setReport ])
+    }, [ setLoading, setReport, setReportError ])
 
     const getReports = useCallback(async () => {
+        setHistoryError("")
         setLoading(true)
         try {
             const response = await getAllInterviewReports()
@@ -53,33 +66,46 @@ export const useInterview = () => {
             setReports(interviewReports)
             return interviewReports
         } catch (error) {
-            console.error("Error fetching reports:", error)
+            setHistoryError(error.response?.data?.message || "Unable to load your recent interview plans.")
             setReports([])
             return []
         } finally {
             setLoading(false)
         }
-    }, [ setLoading, setReports ])
+    }, [ setHistoryError, setLoading, setReports ])
 
     const getResumePdf = async (interviewReportId) => {
-        setLoading(true)
+        setDownloading(true)
+        setDownloadError("")
         try {
             const response = await generateResumePdf({ interviewReportId })
-            if (!response) return
-            const url = window.URL.createObjectURL(new Blob([ response ], { type: "application/pdf" }))
+            const url = window.URL.createObjectURL(response)
             const link = document.createElement("a")
             link.href = url
             link.setAttribute("download", `resume_${interviewReportId}.pdf`)
             document.body.appendChild(link)
             link.click()
             link.remove()
+            window.setTimeout(() => window.URL.revokeObjectURL(url), 1000)
         }
         catch (error) {
-            console.error("Error generating PDF:", error)
+            setDownloadError(error.response?.data?.message || "Unable to download the resume PDF. Please try again.")
         } finally {
-            setLoading(false)
+            setDownloading(false)
         }
     }
 
-    return { loading, report, reports, generateReport, getReportById, getReports, getResumePdf }
+    return {
+        loading,
+        report,
+        reports,
+        historyError,
+        reportError,
+        downloading,
+        downloadError,
+        generateReport,
+        getReportById,
+        getReports,
+        getResumePdf
+    }
 }
