@@ -8,7 +8,19 @@
   },
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/login",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/register",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/interview",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/interview/:interviewId",
       "destination": "/index.html"
     }
   ]
