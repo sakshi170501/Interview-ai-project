@@ -1,12 +1,14 @@
 require("dotenv").config()
 const dns = require("node:dns")
 
-const dnsServers = (process.env.MONGO_DNS_SERVERS || "8.8.8.8,8.8.4.4")
-    .split(",")
-    .map((server) => server.trim())
-    .filter(Boolean)
+if (!process.env.VERCEL) {
+    const dnsServers = (process.env.MONGO_DNS_SERVERS || "8.8.8.8,8.8.4.4")
+        .split(",")
+        .map((server) => server.trim())
+        .filter(Boolean)
 
-dns.setServers(dnsServers)
+    dns.setServers(dnsServers)
+}
 
 const app = require("./src/app")
 const connectToDB = require("./src/config/database")
