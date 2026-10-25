@@ -10,16 +10,35 @@ if (!process.env.VERCEL) {
     dns.setServers(dnsServers)
 }
 
-const app = require("../Backend/src/app")
-const connectToDB = require("../Backend/src/config/database")
+let app
+let connectToDB
 
 module.exports = async function handler(req, res) {
     if (req.url?.split("?")[0] === "/api/health") {
-        return app(req, res)
+        res.statusCode = 200
+        res.setHeader("Content-Type", "application/json")
+        return res.end(JSON.stringify({ status: "ok" }))
     }
 
     if (!process.env.JWT_SECRET) {
         return res.status(500).json({ message: "JWT_SECRET must be configured in Vercel project settings." })
+    }
+
+    try {
+        app ||= require("../Backend/src/app")
+        connectToDB ||= require("../Backend/src/config/database")
+    } catch (error) {
+        const requestId = randomUUID()
+        console.error("Unable to load API dependencies:", {
+            requestId,
+            name: error.name,
+            code: error.code,
+            message: error.message
+        })
+        return res.status(500).json({
+            message: "The API could not start. Check the Vercel function logs.",
+            requestId
+        })
     }
 
     try {
