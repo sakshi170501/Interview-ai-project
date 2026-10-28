@@ -30,5 +30,8 @@
   "devDependencies": {
     "@ljharb/tsconfig": "^0.3.2",
     "nodemon": "^3.1.14"
+  },
+  "optionalDependencies": {
+    "@napi-rs/canvas-linux-x64-gnu": "^0.1.80"
   }
 }
