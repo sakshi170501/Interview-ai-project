@@ -3,8 +3,18 @@ const generateResumePdf = require("../services/pdf.service")
 const interviewReportModel = require("../models/interviewReport.model")
 const mongoose = require("mongoose")
 
+let pdfParserRuntime
 
+function getPdfParserRuntime() {
+    if (!pdfParserRuntime) {
+        const { CanvasFactory, getData } = require("pdf-parse/worker")
+        const { PDFParse } = require("pdf-parse")
+        PDFParse.setWorker(getData())
+        pdfParserRuntime = { CanvasFactory, PDFParse }
+    }
 
+    return pdfParserRuntime
+}
 
 /**
  * @description Controller to generate interview report based on user self description, resume and job description.
@@ -15,11 +25,10 @@ async function generateInterViewReportController(req, res) {
     const jobDescription = req.body.jobDescription?.trim() || ""
     let resumeText = ""
     if (req.file) {
-        let pdfParse
+        let PDFParse
         let CanvasFactory
         try {
-            ({ CanvasFactory } = require("pdf-parse/worker"))
-            pdfParse = require("pdf-parse")
+            ({ PDFParse, CanvasFactory } = getPdfParserRuntime())
         } catch (error) {
             console.error("Unable to load PDF parser:", {
                 name: error.name,
@@ -33,7 +42,7 @@ async function generateInterViewReportController(req, res) {
 
         let parser
         try {
-            parser = new pdfParse.PDFParse({
+            parser = new PDFParse({
                 data: req.file.buffer,
                 CanvasFactory
             })
