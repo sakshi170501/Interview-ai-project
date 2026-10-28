@@ -42,7 +42,8 @@ app.use((error, req, res, next) => {
         console.error("AI provider request failed:", {
             status: error.providerStatus,
             code: error.providerCode,
-            message: error.cause?.message || error.message
+            model: error.providerModel,
+            message: error.providerMessage || error.cause?.message || error.message
         })
         return res.status(status).json({ message: error.message })
     }

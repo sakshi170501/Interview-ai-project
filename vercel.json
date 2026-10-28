@@ -5,6 +5,12 @@
     "api/[...path].js": {
       "maxDuration": 60
     },
+    "api/interview/report/[interviewId].js": {
+      "maxDuration": 60
+    },
+    "api/interview/resume/pdf/[interviewReportId].js": {
+      "maxDuration": 60
+    },
     "api/auth/[...path].js": {
       "maxDuration": 60
     },

@@ -4,6 +4,8 @@ const { test } = require("node:test")
 const handler = require("../../api/[...path].js")
 const authHandler = require("../../api/auth/[...path].js")
 const interviewHandler = require("../../api/interview/[...path].js")
+const reportHandler = require("../../api/interview/report/[interviewId].js")
+const resumePdfHandler = require("../../api/interview/resume/pdf/[interviewReportId].js")
 
 async function requestHandler(requestHandler, path, options = {}) {
     const server = http.createServer((req, res) => {
@@ -63,6 +65,42 @@ test("nested Vercel interview routes forward requests to the API handler", async
 
     try {
         const response = await requestHandler(interviewHandler, "/api/interview/report/example-id")
+        assert.equal(response.status, 500)
+        assert.match((await response.json()).message, /JWT_SECRET/)
+    } finally {
+        if (previousSecret === undefined) {
+            delete process.env.JWT_SECRET
+        } else {
+            process.env.JWT_SECRET = previousSecret
+        }
+    }
+})
+
+test("explicit Vercel report route forwards requests to the API handler", async () => {
+    const previousSecret = process.env.JWT_SECRET
+    process.env.JWT_SECRET = ""
+
+    try {
+        const response = await requestHandler(reportHandler, "/api/interview/report/0123456789abcdef01234567")
+        assert.equal(response.status, 500)
+        assert.match((await response.json()).message, /JWT_SECRET/)
+    } finally {
+        if (previousSecret === undefined) {
+            delete process.env.JWT_SECRET
+        } else {
+            process.env.JWT_SECRET = previousSecret
+        }
+    }
+})
+
+test("explicit Vercel resume PDF route forwards requests to the API handler", async () => {
+    const previousSecret = process.env.JWT_SECRET
+    process.env.JWT_SECRET = ""
+
+    try {
+        const response = await requestHandler(resumePdfHandler, "/api/interview/resume/pdf/0123456789abcdef01234567", {
+            method: "POST"
+        })
         assert.equal(response.status, 500)
         assert.match((await response.json()).message, /JWT_SECRET/)
     } finally {

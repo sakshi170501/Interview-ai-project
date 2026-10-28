@@ -12,7 +12,7 @@ The repository root is the single Vercel project. Keep `Backend` and `Frontend` 
 4. Optionally set `GOOGLE_GENAI_MODEL` to override the default `gemini-3.8-flash`.
 5. Deploy. The API is served from the same origin under `/api`; the frontend does not need a separate API URL.
 
-The health check at `/api/health` does not require MongoDB. The other API routes connect to MongoDB on demand and reuse the connection while a serverless instance remains warm.
+The health check at `/api/health` does not require MongoDB. The report-fetch and resume-PDF API routes have explicit Vercel function entries under `api/interview` so nested URLs are routed to the serverless handler. The other API routes connect to MongoDB on demand and reuse the connection while a serverless instance remains warm.
 
 For local development, run `npm install` at the repository root, then use two terminals:
 
