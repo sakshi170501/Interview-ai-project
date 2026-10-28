@@ -1,6 +1,7 @@
 const assert = require("node:assert/strict")
 const path = require("node:path")
 const { test } = require("node:test")
+const generateResumePdf = require("../src/services/pdf.service")
 
 const servicePath = path.resolve(__dirname, "../src/services/ai.service.js")
 const modelPath = path.resolve(__dirname, "../src/models/interviewReport.model.js")
@@ -59,5 +60,37 @@ test("creates a report from a self-description without referencing an absent upl
     assert.equal(statusCode, 201)
     assert.equal(createdReport.resume, "")
     assert.equal(createdReport.selfDescription, "Backend developer with API experience")
+    assert.equal(responseBody.interviewReport._id, "report-id")
+})
+
+test("extracts uploaded PDF text using the Node canvas factory", async () => {
+    let statusCode
+    let responseBody
+    const response = {
+        status(code) {
+            statusCode = code
+            return this
+        },
+        json(body) {
+            responseBody = body
+            return this
+        }
+    }
+    const resume = generateResumePdf({
+        title: "Backend Engineer",
+        selfDescription: "Backend developer",
+        resume: "Built scalable Node.js APIs",
+        matchScore: 80,
+        skillGaps: []
+    })
+
+    await generateInterViewReportController({
+        body: { jobDescription: "Backend Engineer" },
+        file: { buffer: resume },
+        user: { id: "user-id" }
+    }, response)
+
+    assert.equal(statusCode, 201)
+    assert.match(createdReport.resume, /Built scalable Node\.js APIs/)
     assert.equal(responseBody.interviewReport._id, "report-id")
 })

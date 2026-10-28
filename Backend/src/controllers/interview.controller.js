@@ -16,7 +16,9 @@ async function generateInterViewReportController(req, res) {
     let resumeText = ""
     if (req.file) {
         let pdfParse
+        let CanvasFactory
         try {
+            ({ CanvasFactory } = require("pdf-parse/worker"))
             pdfParse = require("pdf-parse")
         } catch (error) {
             console.error("Unable to load PDF parser:", {
@@ -29,8 +31,12 @@ async function generateInterViewReportController(req, res) {
             })
         }
 
-        const parser = new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))
+        let parser
         try {
+            parser = new pdfParse.PDFParse({
+                data: req.file.buffer,
+                CanvasFactory
+            })
             const resumeContent = await parser.getText()
             resumeText = resumeContent.text
         } catch {
@@ -38,7 +44,9 @@ async function generateInterViewReportController(req, res) {
                 message: "Unable to read the uploaded PDF. Please upload a valid, text-readable PDF."
             })
         } finally {
-            await parser.destroy()
+            if (parser) {
+                await parser.destroy()
+            }
         }
     }
 
