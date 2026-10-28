@@ -1,4 +1,3 @@
-const pdfParse = require("pdf-parse")
 const generateInterviewReport = require("../services/ai.service")
 const generateResumePdf = require("../services/pdf.service")
 const interviewReportModel = require("../models/interviewReport.model")
@@ -16,6 +15,20 @@ async function generateInterViewReportController(req, res) {
     const jobDescription = req.body.jobDescription?.trim() || ""
     let resumeText = ""
     if (req.file) {
+        let pdfParse
+        try {
+            pdfParse = require("pdf-parse")
+        } catch (error) {
+            console.error("Unable to load PDF parser:", {
+                name: error.name,
+                code: error.code,
+                message: error.message
+            })
+            return res.status(503).json({
+                message: "PDF resume processing is temporarily unavailable. Please try again or use the self-description field."
+            })
+        }
+
         const parser = new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))
         try {
             const resumeContent = await parser.getText()
