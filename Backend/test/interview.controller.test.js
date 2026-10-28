@@ -94,3 +94,27 @@ test("extracts uploaded PDF text using the Node canvas factory", async () => {
     assert.match(createdReport.resume, /Built scalable Node\.js APIs/)
     assert.equal(responseBody.interviewReport._id, "report-id")
 })
+
+test("returns a clear validation error for an unreadable uploaded PDF", async () => {
+    let statusCode
+    let responseBody
+    const response = {
+        status(code) {
+            statusCode = code
+            return this
+        },
+        json(body) {
+            responseBody = body
+            return this
+        }
+    }
+
+    await generateInterViewReportController({
+        body: { jobDescription: "Backend Engineer" },
+        file: { buffer: Buffer.from("not a PDF") },
+        user: { id: "user-id" }
+    }, response)
+
+    assert.equal(statusCode, 400)
+    assert.match(responseBody.message, /valid, text-readable PDF/)
+})

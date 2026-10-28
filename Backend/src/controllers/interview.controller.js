@@ -38,19 +38,43 @@ async function generateInterViewReportController(req, res) {
                 CanvasFactory
             })
             const resumeContent = await parser.getText()
-            resumeText = resumeContent.text
-        } catch {
-            return res.status(400).json({
-                message: "Unable to read the uploaded PDF. Please upload a valid, text-readable PDF."
+            resumeText = resumeContent.text?.trim() || ""
+        } catch (error) {
+            const message = error.message || String(error)
+            const runtimeFailure = /native binding|DOMMatrix|Path2D|ImageData|@napi-rs\/canvas/i.test(message)
+            console.error("Unable to parse uploaded PDF:", {
+                name: error.name,
+                code: error.code,
+                message,
+                stack: error.stack
+            })
+            return res.status(runtimeFailure ? 503 : 400).json({
+                message: runtimeFailure
+                    ? "PDF processing is temporarily unavailable. Please try again or use the self-description field."
+                    : "Unable to read the uploaded PDF. Please upload a valid, text-readable PDF."
             })
         } finally {
             if (parser) {
-                await parser.destroy()
+                try {
+                    await parser.destroy()
+                } catch (error) {
+                    console.error("Unable to release PDF parser resources:", {
+                        name: error.name,
+                        code: error.code,
+                        message: error.message,
+                        stack: error.stack
+                    })
+                }
             }
         }
     }
 
     if (!jobDescription || (!resumeText.trim() && !selfDescription)) {
+        if (req.file && !resumeText.trim()) {
+            return res.status(400).json({
+                message: "We couldn't find selectable text in this PDF. Upload a text-based resume or enter a self-description instead."
+            })
+        }
         return res.status(400).json({
             message: "A job description and either a resume or self-description are required."
         })
