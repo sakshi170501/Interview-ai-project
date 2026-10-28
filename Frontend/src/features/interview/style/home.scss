@@ -465,18 +465,30 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
             color: $text-primary;
         }
 
-        @media (max-width: 560px) {
-            .interview-card__footer {
-                align-items: stretch;
-                flex-direction: column;
+        &:focus-visible {
+            outline: 2px solid $accent;
+            outline-offset: 2px;
+        }
+    }
+}
 
-                .generate-btn {
-                    justify-content: center;
-                    width: 100%;
-                }
-            }
+@media (max-width: 560px) {
+    .interview-card__footer {
+        align-items: stretch;
+        flex-direction: column;
 
-            // ── Refined preparation dashboard ────────────────────────────────────────────
+        .generate-btn {
+            justify-content: center;
+            width: 100%;
+        }
+    }
+
+    .page-header__account {
+        justify-content: space-between;
+    }
+}
+
+// ── Refined preparation dashboard ────────────────────────────────────────────
             .home-page {
                 max-width: 1440px;
                 margin: 0 auto;
@@ -632,51 +644,6 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
                 border: 1px solid #e7e8f0;
                 border-radius: 1.2rem;
                 box-shadow: 0 22px 65px rgba(36, 39, 68, 0.08), 0 2px 6px rgba(36, 39, 68, 0.03);
-
-                &__intro {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    gap: 1rem;
-                    padding: 1.6rem 1.8rem;
-                    border-bottom: 1px solid #ececf3;
-
-                    h2 {
-                        margin: 0.35rem 0 0.25rem;
-                        color: #202943;
-                        font-size: 1.2rem;
-                        font-weight: 700;
-                        letter-spacing: -0.035em;
-                    }
-
-                    p {
-                        margin: 0;
-                        color: #7a8294;
-                        font-size: 0.85rem;
-                        line-height: 1.5;
-                    }
-                }
-
-                &__step {
-                    color: #8174ce;
-                    font-size: 0.65rem;
-                    font-weight: 750;
-                    letter-spacing: 0.12em;
-                }
-
-                &__duration {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.45rem;
-                    flex-shrink: 0;
-                    padding: 0.55rem 0.75rem;
-                    border: 1px solid #eceaf8;
-                    border-radius: 999px;
-                    background: #f8f7ff;
-                    color: #6e63a8;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                }
 
                 &__body {
                     display: grid;
@@ -1066,7 +1033,6 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
                     }
                 }
 
-                .interview-card__intro,
                 .interview-card__footer {
                     padding-right: 1.35rem;
                     padding-left: 1.35rem;
@@ -1091,11 +1057,6 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
                     }
                 }
 
-                .interview-card__intro {
-                    align-items: flex-start;
-                    flex-direction: column;
-                }
-
                 .recent-reports__heading {
                     align-items: flex-start;
                 }
@@ -1114,15 +1075,3 @@ $font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
                     transition: none;
                 }
             }
-
-            .page-header__account {
-                justify-content: space-between;
-            }
-        }
-
-        &:focus-visible {
-            outline: 2px solid $accent;
-            outline-offset: 2px;
-        }
-    }
-}

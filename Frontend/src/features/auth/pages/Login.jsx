@@ -29,58 +29,63 @@ const Login = () => {
 
   if (loading) {
     return (
-      <main>
-        <h1>Loading..</h1>
+      <main className="auth-page">
+        <p className="auth-loading" role="status">Loading your account…</p>
       </main>
     );
   }
 
   return (
-    <main>
-      <div className="form-container">
-        <h1>Login</h1>
+    <main className="auth-page">
+      <div className="auth-layout">
+        <Link className="auth-brand" to="/" aria-label="Interview AI home">
+          <span className="auth-brand__mark" aria-hidden="true">I</span>
+          <span>Interview<span className="auth-brand__accent">AI</span></span>
+        </Link>
 
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label htmlFor="email">Email</label>
-
-            <input
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              type="email"
-              required
-              id="email"
-              name="email"
-              placeholder="Enter the correct email address"
-            />
+        <section className="form-container" aria-labelledby="auth-title">
+          <div className="auth-heading">
+            <h1 id="auth-title">Welcome back</h1>
+            <p>Sign in to continue to your interview plans.</p>
           </div>
 
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
+          <form onSubmit={handleSubmit}>
+            <div className="input-group">
+              <label htmlFor="email">Email address</label>
+              <input
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                required
+                autoComplete="email"
+                id="email"
+                name="email"
+                placeholder="you@example.com"
+              />
+            </div>
 
-            <input
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              type="password"
-              required
-              id="password"
-              name="password"
-              placeholder="Enter the correct Password"
-            />
-          </div>
+            <div className="input-group">
+              <label htmlFor="password">Password</label>
+              <input
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                required
+                autoComplete="current-password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+              />
+            </div>
 
-          {error && <p role="alert">{error}</p>}
-          <button className="button primary-button" disabled={loading}>
-            LOGIN
-          </button>
-        </form>
+            {error && <p role="alert">{error}</p>}
+            <button className="button primary-button" disabled={loading}>
+              {loading ? "Signing in..." : "Sign in"}
+            </button>
+          </form>
 
-        <p>
-          Don't have an account?
-          <Link to="/register">Register</Link>
-        </p>
+          <p className="auth-switch">
+            New to InterviewAI? <Link to="/register">Create an account</Link>
+          </p>
+        </section>
       </div>
     </main>
   );

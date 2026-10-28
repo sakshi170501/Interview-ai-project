@@ -28,56 +28,73 @@ const Register = () => {
     }
   }
   if(loading){
-    return(<main><h1>Loading....</h1></main>)
+    return(<main className="auth-page"><p className="auth-loading" role="status">Loading your account…</p></main>)
   }
   return (
-    <main>
-      
-      <div className="form-container">
-        <h1>Register</h1>
+    <main className="auth-page">
+      <div className="auth-layout">
+        <Link className="auth-brand" to="/" aria-label="Interview AI home">
+          <span className="auth-brand__mark" aria-hidden="true">I</span>
+          <span>Interview<span className="auth-brand__accent">AI</span></span>
+        </Link>
+
+        <section className="form-container" aria-labelledby="auth-title">
+          <div className="auth-heading">
+            <h1 id="auth-title">Create your account</h1>
+            <p>Get a personalized interview plan tailored to your next opportunity.</p>
+          </div>
+
         <form onSubmit={handleSubmit}>
-            <div className="input-group">
+          <div className="input-group">
             <label htmlFor="username">Username</label>
             <input
-              onChange={(e)=>{setUsername(e.target.value)}}
+              onChange={(e) => setUsername(e.target.value)}
               type="text"
               minLength={2}
               maxLength={40}
               required
+              autoComplete="username"
               id="username"
               name="username"
-              placeholder="Enter the correct username"
+              placeholder="Choose a username"
             />
           </div>
           <div className="input-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Email address</label>
             <input
-             onChange={(e)=>{setEmail(e.target.value)}}
+              onChange={(e) => setEmail(e.target.value)}
               type="email"
               required
+              autoComplete="email"
               id="email"
               name="email"
-              placeholder="Enter the correct email address"
+              placeholder="you@example.com"
             />
           </div>
           <div className="input-group">
             <label htmlFor="password">Password</label>
             <input
-             onChange={(e)=>{setPassword(e.target.value)}}
+              onChange={(e) => setPassword(e.target.value)}
               type="password"
-              id="password"
-              name="password"
               minLength={8}
               maxLength={72}
               required
-              placeholder="Enter the correct Password"
+              autoComplete="new-password"
+              id="password"
+              name="password"
+              placeholder="Create a password"
             />
           </div>
           {error && <p role="alert">{error}</p>}
-          <button className="button primary-button" disabled={loading}>REGISTER</button>
+          <button className="button primary-button" disabled={loading}>
+            {loading ? "Creating account..." : "Create account"}
+          </button>
         </form>
 
-        <p>Alraedy have an account?<Link to='/login'>Login</Link></p>
+          <p className="auth-switch">
+            Already have an account? <Link to="/login">Sign in</Link>
+          </p>
+        </section>
       </div>
     </main>
   )

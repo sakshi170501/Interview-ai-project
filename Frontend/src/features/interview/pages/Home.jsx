@@ -91,17 +91,6 @@ const Home = () => {
             </header>
 
             <div className='interview-card'>
-                <div className='interview-card__intro'>
-                    <div>
-                        <span className='interview-card__step'>YOUR PREPARATION WORKSPACE</span>
-                        <h2>Build your interview plan</h2>
-                        <p>Share the role and a little about yourself. We’ll take it from there.</p>
-                    </div>
-                    <span className='interview-card__duration'>
-                        <svg aria-hidden='true' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'><circle cx='12' cy='12' r='10' /><path d='M12 6v6l4 2' /></svg>
-                        About 2 minutes
-                    </span>
-                </div>
                 <div className='interview-card__body'>
 
                     {/* Left Panel - Job Description */}
