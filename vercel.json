@@ -4,6 +4,12 @@
   "functions": {
     "api/[...path].js": {
       "maxDuration": 60
+    },
+    "api/auth/[...path].js": {
+      "maxDuration": 60
+    },
+    "api/interview/[...path].js": {
+      "maxDuration": 60
     }
   },
   "rewrites": [

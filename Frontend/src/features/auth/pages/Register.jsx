@@ -19,7 +19,12 @@ const Register = () => {
       await handleRegister({username,email,password})
       navigate("/")
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Unable to create your account. Please try again.")
+      setError(
+        requestError.response?.data?.message ||
+        (requestError.response?.status === 404
+          ? "The registration service is unavailable on this deployment. Please try again later."
+          : "Unable to create your account. Please try again.")
+      )
     }
   }
   if(loading){

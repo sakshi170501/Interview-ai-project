@@ -61,12 +61,19 @@ const Home = () => {
 
     return (
         <div className='home-page'>
-
-            {/* Page Header */}
-            <header className='page-header'>
-                <div className='page-header__account'>
-                    <span>Signed in as {user?.username}</span>
-                    <button type='button' className='button' onClick={async () => {
+            <header className='app-topbar'>
+                <a className='brand' href='/' aria-label='Interview AI home'>
+                    <span className='brand__mark' aria-hidden='true'>I</span>
+                    <span className='brand__name'>interview<span>ai</span></span>
+                </a>
+                <div className='topbar-account'>
+                    <div className='topbar-account__identity'>
+                        <span className='topbar-account__avatar' aria-hidden='true'>
+                            {(user?.username || 'U').charAt(0).toUpperCase()}
+                        </span>
+                        <span className='topbar-account__name'>{user?.username || 'Your account'}</span>
+                    </div>
+                    <button type='button' className='logout-button' onClick={async () => {
                         try {
                             await handleLogout()
                             navigate('/login')
@@ -75,12 +82,26 @@ const Home = () => {
                         }
                     }}>Log out</button>
                 </div>
-                <h1>Create Your Custom <span className='highlight'>Interview Plan</span></h1>
-                <p>Let our AI analyze the job requirements and your unique profile to build a winning strategy.</p>
             </header>
 
-            {/* Main Card */}
+            <header className='page-header'>
+                <p className='page-header__eyebrow'><span /> YOUR NEXT OPPORTUNITY STARTS HERE</p>
+                <h1>Show up ready for <span className='highlight'>what’s next.</span></h1>
+                <p>Turn your experience and a job description into a focused, personalized interview strategy.</p>
+            </header>
+
             <div className='interview-card'>
+                <div className='interview-card__intro'>
+                    <div>
+                        <span className='interview-card__step'>YOUR PREPARATION WORKSPACE</span>
+                        <h2>Build your interview plan</h2>
+                        <p>Share the role and a little about yourself. We’ll take it from there.</p>
+                    </div>
+                    <span className='interview-card__duration'>
+                        <svg aria-hidden='true' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'><circle cx='12' cy='12' r='10' /><path d='M12 6v6l4 2' /></svg>
+                        About 2 minutes
+                    </span>
+                </div>
                 <div className='interview-card__body'>
 
                     {/* Left Panel - Job Description */}
@@ -182,26 +203,52 @@ const Home = () => {
 
             {/* Recent Reports List */}
             {historyError && <p role='alert'>{historyError}</p>}
-            {reports.length > 0 && (
-                <section className='recent-reports'>
-                    <h2>My Recent Interview Plans</h2>
+            <section className='recent-reports'>
+                <div className='recent-reports__heading'>
+                    <div>
+                        <p className='recent-reports__eyebrow'>PICK UP WHERE YOU LEFT OFF</p>
+                        <h2>Your interview plans</h2>
+                    </div>
+                    <span className='recent-reports__count'>{reports.length} {reports.length === 1 ? 'plan' : 'plans'}</span>
+                </div>
+                {reports.length > 0 ? (
                     <ul className='reports-list'>
                         {reports.map(report => (
-                            <li key={report._id} className='report-item' onClick={() => navigate(`/interview/${report._id}`)}>
-                                <h3>{report.title || 'Interview preparation plan'}</h3>
-                                <p className='report-meta'>Generated on {new Date(report.createdAt).toLocaleDateString()}</p>
-                                <p className={`match-score ${report.matchScore >= 80 ? 'score--high' : report.matchScore >= 60 ? 'score--mid' : 'score--low'}`}>Match Score: {report.matchScore}%</p>
+                            <li key={report._id}>
+                                <button type='button' className='report-item' onClick={() => navigate(`/interview/${report._id}`)}>
+                                    <span className='report-item__icon' aria-hidden='true'>
+                                        <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z' /><path d='M14 2v6h6M8 13h8M8 17h8' /></svg>
+                                    </span>
+                                    <span className='report-item__content'>
+                                        <span className='report-item__title'>{report.title || 'Interview preparation plan'}</span>
+                                        <span className='report-meta'>Created <time dateTime={report.createdAt}>{new Date(report.createdAt).toLocaleDateString()}</time></span>
+                                    </span>
+                                    <span className={`report-item__score ${report.matchScore >= 80 ? 'score--high' : report.matchScore >= 60 ? 'score--mid' : 'score--low'}`}>
+                                        <strong>{report.matchScore ?? 0}%</strong>
+                                        <span>match</span>
+                                    </span>
+                                    <svg className='report-item__arrow' aria-hidden='true' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'><path d='M5 12h14M12 5l7 7-7 7' /></svg>
+                                </button>
                             </li>
                         ))}
                     </ul>
-                </section>
-            )}
+                ) : (
+                    <div className='reports-empty'>
+                        <span className='reports-empty__icon' aria-hidden='true'>
+                            <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z' /><path d='M14 2v6h6M8 13h8M8 17h5' /></svg>
+                        </span>
+                        <div>
+                            <h3>Your next great interview starts here</h3>
+                            <p>Create a plan above and it’ll be ready for you here whenever you need it.</p>
+                        </div>
+                    </div>
+                )}
+            </section>
 
             {/* Page Footer */}
             <footer className='page-footer'>
-                <a href='#'>Privacy Policy</a>
-                <a href='#'>Terms of Service</a>
-                <a href='#'>Help Center</a>
+                <span>Made to help you do your best.</span>
+                <span>Interview AI · Your preparation, made personal.</span>
             </footer>
         </div>
     )
